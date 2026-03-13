@@ -353,8 +353,10 @@ mod tests {
     };
     use crate::error::StormError;
     use crate::types::{AddFileOptions, CreateOptions, MpqArchive};
+    #[cfg(feature = "compression-bzip2")]
     use std::io::Write;
 
+    #[cfg(feature = "compression-bzip2")]
     fn encode_offt(value: i64) -> [u8; 8] {
         let mut y = if value < 0 {
             (-value) as u64
@@ -373,6 +375,7 @@ mod tests {
         out
     }
 
+    #[cfg(feature = "compression-bzip2")]
     fn compress_bzip2(payload: &[u8]) -> Vec<u8> {
         let mut enc = bzip2::write::BzEncoder::new(Vec::new(), bzip2::Compression::best());
         enc.write_all(payload).unwrap();
@@ -396,6 +399,7 @@ mod tests {
         out
     }
 
+    #[cfg(feature = "compression-bzip2")]
     fn build_bsd0_patch_payload(base: &[u8], target: &[u8], md5_before: [u8; 16]) -> Vec<u8> {
         let md5_after = crate::crypto::md5_digest(target);
         let mut ctrl_raw = Vec::new();
@@ -564,6 +568,7 @@ mod tests {
         ));
     }
 
+    #[cfg(feature = "compression-bzip2")]
     #[test]
     fn bsd0_patch_payload_transforms_base_content() {
         let base = b"hello-patch";
@@ -573,6 +578,7 @@ mod tests {
         assert_eq!(out, target);
     }
 
+    #[cfg(feature = "compression-bzip2")]
     #[test]
     fn bsd0_patch_rejects_invalid_patch_payload() {
         let base = b"hello-patch";

@@ -2,6 +2,7 @@ use stormlib_rs::lookup_file_name;
 use stormlib_rs::MpqArchive;
 use stormlib_rs::MpqFileFlags;
 
+#[cfg(feature = "compression-zlib")]
 #[test]
 fn stormlib_generated_mixed_sector_archive_reads_with_mixed_raw_sector_sizes() {
     let dir = tempfile::tempdir().expect("tempdir");

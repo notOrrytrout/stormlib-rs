@@ -1,5 +1,6 @@
 mod common;
 
+#[cfg(feature = "compression-zlib")]
 use stormlib_rs::CompressionMethod;
 use stormlib_rs::{AddFileOptions, CreateOptions, MpqArchive};
 
@@ -24,6 +25,7 @@ fn create_add_verify_and_compact_work_logically() {
     assert_eq!(reopened.header.format_version, 0);
 }
 
+#[cfg(feature = "compression-zlib")]
 #[test]
 fn encrypted_sector_file_survives_rewrite_and_compact() {
     let (_dir, path) = common::temp_archive_path("mutate-encrypted.mpq");

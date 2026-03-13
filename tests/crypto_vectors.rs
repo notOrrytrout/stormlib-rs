@@ -2,7 +2,7 @@ use stormlib_rs::{decrypt_mpq_block, derive_file_key, encrypt_mpq_block};
 
 fn hex_decode(s: &str) -> Vec<u8> {
     let s = s.trim();
-    assert!(s.len() % 2 == 0);
+    assert!(s.len().is_multiple_of(2));
     (0..s.len())
         .step_by(2)
         .map(|i| u8::from_str_radix(&s[i..i + 2], 16).expect("hex"))
@@ -27,7 +27,7 @@ fn crypto_vectors() {
         let encrypted = hex_decode(parts[5]);
         assert_eq!(plain.len(), encrypted.len());
         assert!(
-            plain.len() % 4 == 0,
+            plain.len().is_multiple_of(4),
             "vector plaintext must be multiple of 4 bytes"
         );
 

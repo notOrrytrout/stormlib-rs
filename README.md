@@ -45,6 +45,13 @@ Always-available MPQ codec implementations:
 cargo build
 ```
 
+## Install As Dependency
+
+```toml
+[dependencies]
+stormlib-rs = "0.0.2"
+```
+
 Disable defaults (minimal compression features):
 
 ```bash
@@ -105,6 +112,7 @@ Run benchmarks:
 cargo bench --all-features
 ```
 
-## MSRV
+## Toolchain
 
-Rust `1.74`.
+Built and tested on current stable Rust.  
+`rust-version` in `Cargo.toml` defines the minimum supported compiler version.

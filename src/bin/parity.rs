@@ -454,7 +454,15 @@ fn cmd_codec_vectors(args: &[String]) -> Result<(), Box<dyn Error>> {
     let input_path = out.join("input.bin");
     fs::write(&input_path, &input_bytes)?;
 
+    #[cfg(feature = "compression-pkware")]
     let mut outputs: Vec<(&str, CompressionMethod)> = vec![
+        ("huffman", CompressionMethod::Huffman),
+        ("adpcm_mono", CompressionMethod::AdpcmMono),
+        ("adpcm_stereo", CompressionMethod::AdpcmStereo),
+        ("sparse", CompressionMethod::Sparse),
+    ];
+    #[cfg(not(feature = "compression-pkware"))]
+    let outputs: Vec<(&str, CompressionMethod)> = vec![
         ("huffman", CompressionMethod::Huffman),
         ("adpcm_mono", CompressionMethod::AdpcmMono),
         ("adpcm_stereo", CompressionMethod::AdpcmStereo),

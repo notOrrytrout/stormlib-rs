@@ -5,7 +5,7 @@ use crate::internal::common::{
 use crate::types::{BlockTableEntry, HashTableEntry, MpqFileFlags};
 
 pub fn parse_hash_table(bytes: &[u8]) -> Result<Vec<HashTableEntry>> {
-    if bytes.len() % HashTableEntry::SERIALIZED_LEN != 0 {
+    if !bytes.len().is_multiple_of(HashTableEntry::SERIALIZED_LEN) {
         return Err(StormError::Format(
             "hash table byte length is not a multiple of 16",
         ));
@@ -32,7 +32,7 @@ pub fn parse_hash_table(bytes: &[u8]) -> Result<Vec<HashTableEntry>> {
 }
 
 pub fn parse_block_table(bytes: &[u8]) -> Result<Vec<BlockTableEntry>> {
-    if bytes.len() % BlockTableEntry::SERIALIZED_LEN != 0 {
+    if !bytes.len().is_multiple_of(BlockTableEntry::SERIALIZED_LEN) {
         return Err(StormError::Format(
             "block table byte length is not a multiple of 16",
         ));

@@ -1,6 +1,9 @@
 use std::collections::BTreeMap;
 
+#[cfg(feature = "compression-zlib")]
 use stormlib_rs::CompressionMethod;
+#[cfg(feature = "compression-zlib-native")]
+use stormlib_rs::{decrypt_mpq_block, derive_file_key};
 use stormlib_rs::{AddFileOptions, CreateOptions, MpqArchive, MpqFileFlags};
 
 fn fill_beta(len: usize) -> Vec<u8> {
@@ -63,6 +66,7 @@ fn canonical_subset(path: &std::path::Path) -> BTreeMap<String, (MpqFileFlags, V
     out
 }
 
+#[cfg(feature = "compression-zlib")]
 #[test]
 fn rust_writer_matches_stormlib_reference_canonical_subset() {
     let dir = tempfile::tempdir().expect("tempdir");

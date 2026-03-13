@@ -3,3 +3,23 @@ tools/parity/mixed_sector/generate_fixture
 tools/parity/writer_equivalence/generate_fixture
 __pycache__/
 *.py[cod]
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100/
+.TemporaryItems/
+.Trashes/
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Linux / generic desktop
+.directory
+*~
+*.lock

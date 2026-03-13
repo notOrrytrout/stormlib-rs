@@ -537,7 +537,9 @@ impl MpqFile {
 
 #[cfg(test)]
 mod tests {
-    use crate::compression::{compress_masked_best_effort, CompressionMethod};
+    #[cfg(feature = "compression-zlib")]
+    use crate::compression::compress_masked_best_effort;
+    use crate::compression::CompressionMethod;
     use crate::internal::common::encrypt_mpq_block_in_place;
 
     #[test]

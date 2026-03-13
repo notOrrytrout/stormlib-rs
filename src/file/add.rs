@@ -268,7 +268,7 @@ pub(crate) fn rewrite_archive_from_manifest_with_policy(
             name: "(listfile)".to_string(),
             data: listfile.into_bytes(),
             options: AddFileOptions {
-                compression: Some(CompressionMethod::Zlib),
+                compression: internal_default_compression(),
                 encrypted: true,
                 fix_key: true,
                 locale: 0,
@@ -287,7 +287,7 @@ pub(crate) fn rewrite_archive_from_manifest_with_policy(
             name: "(attributes)".to_string(),
             data: attributes,
             options: AddFileOptions {
-                compression: Some(CompressionMethod::Zlib),
+                compression: internal_default_compression(),
                 encrypted: true,
                 fix_key: true,
                 locale: 0,
@@ -442,6 +442,16 @@ pub(crate) fn rewrite_archive_from_manifest_with_policy(
         },
         file_names,
     })
+}
+
+#[cfg(feature = "compression-zlib")]
+fn internal_default_compression() -> Option<CompressionMethod> {
+    Some(CompressionMethod::Zlib)
+}
+
+#[cfg(not(feature = "compression-zlib"))]
+fn internal_default_compression() -> Option<CompressionMethod> {
+    None
 }
 
 fn compression_flag_for_method(method: CompressionMethod) -> MpqFileFlags {
@@ -641,8 +651,11 @@ mod tests {
 
     use tempfile::tempdir;
 
+    #[cfg(feature = "compression-zlib")]
     use crate::compression::CompressionMethod;
-    use crate::types::{AddFileOptions, Header, MpqArchive, MpqFileFlags, WriteManifest};
+    #[cfg(feature = "compression-zlib")]
+    use crate::types::MpqFileFlags;
+    use crate::types::{AddFileOptions, Header, MpqArchive, WriteManifest};
 
     use super::rewrite_archive_from_manifest;
 
@@ -667,6 +680,7 @@ mod tests {
         assert!(out.file_names.values().any(|n| n == "(listfile)"));
     }
 
+    #[cfg(feature = "compression-zlib")]
     #[test]
     fn rewrite_manifest_supports_non_single_unit_compressed_files() {
         let dir = tempdir().unwrap();
@@ -699,6 +713,7 @@ mod tests {
         assert!(!item.flags.contains(MpqFileFlags::SINGLE_UNIT));
     }
 
+    #[cfg(feature = "compression-zlib")]
     #[test]
     fn rewrite_manifest_writes_sector_crc_table_when_enabled() {
         let dir = tempdir().unwrap();

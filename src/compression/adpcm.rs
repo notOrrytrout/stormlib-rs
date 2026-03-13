@@ -93,7 +93,7 @@ pub fn compress_adpcm(input_pcm: &[u8], channels: usize, compression_level: u8) 
     if compression_level < 1 {
         return Err(StormError::Compression("invalid ADPCM compression level"));
     }
-    if input_pcm.len() % 2 != 0 {
+    if !input_pcm.len().is_multiple_of(2) {
         return Err(StormError::Compression("ADPCM input must be 16-bit PCM"));
     }
 

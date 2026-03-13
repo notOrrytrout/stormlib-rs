@@ -1,5 +1,6 @@
 use stormlib_rs::MpqArchive;
 
+#[cfg(feature = "compression-zlib")]
 #[test]
 fn reads_stormlib_fixture_attributes_exact_values() {
     let dir = tempfile::tempdir().expect("tempdir");

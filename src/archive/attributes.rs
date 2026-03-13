@@ -10,6 +10,16 @@ const MPQ_ATTRIBUTE_PATCH_BIT: u32 = 0x0000_0008;
 const MPQ_ATTRIBUTE_ALL: u32 =
     MPQ_ATTRIBUTE_CRC32 | MPQ_ATTRIBUTE_FILETIME | MPQ_ATTRIBUTE_MD5 | MPQ_ATTRIBUTE_PATCH_BIT;
 
+#[cfg(feature = "compression-zlib")]
+fn attributes_default_compression() -> Option<crate::compression::CompressionMethod> {
+    Some(crate::compression::CompressionMethod::Zlib)
+}
+
+#[cfg(not(feature = "compression-zlib"))]
+fn attributes_default_compression() -> Option<crate::compression::CompressionMethod> {
+    None
+}
+
 fn crc32_ieee(data: &[u8]) -> u32 {
     let mut crc = 0xFFFF_FFFFu32;
     for &b in data {
@@ -87,7 +97,7 @@ impl MpqArchive {
             "(attributes)",
             &data,
             AddFileOptions {
-                compression: Some(crate::compression::CompressionMethod::Zlib),
+                compression: attributes_default_compression(),
                 encrypted: true,
                 fix_key: true,
                 locale: 0,
@@ -542,9 +552,15 @@ mod tests {
             .into_iter()
             .find(|it| it.name.as_deref() == Some("(attributes)"))
             .unwrap();
+        #[cfg(feature = "compression-zlib")]
         assert!(attrs_item.flags.contains(MpqFileFlags::COMPRESS));
+        #[cfg(not(feature = "compression-zlib"))]
+        assert!(!attrs_item.flags.contains(MpqFileFlags::COMPRESS));
         assert!(attrs_item.flags.contains(MpqFileFlags::ENCRYPTED));
         assert!(attrs_item.flags.contains(MpqFileFlags::FIX_KEY));
+        #[cfg(feature = "compression-zlib")]
         assert!(!attrs_item.flags.contains(MpqFileFlags::SINGLE_UNIT));
+        #[cfg(not(feature = "compression-zlib"))]
+        assert!(attrs_item.flags.contains(MpqFileFlags::SINGLE_UNIT));
     }
 }

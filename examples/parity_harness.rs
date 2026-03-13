@@ -147,23 +147,30 @@ fn check_patch_chain(root: &Path) -> Result<(), String> {
 }
 
 fn check_implode_read(_root: &Path) -> Result<(), String> {
-    let payload = fill_beta(4096);
-    let compressed = pklib::implode_bytes(
-        &payload,
-        pklib::CompressionMode::Binary,
-        pklib::DictionarySize::Size4K,
-    )
-    .map_err(|e| format!("implode payload: {e}"))?;
-    let got = stormlib_rs::decompress(
-        CompressionMethod::PkwareImplode,
-        &compressed,
-        Some(payload.len()),
-    )
-    .map_err(|e| format!("decompress implode payload: {e}"))?;
-    if got != payload {
-        return Err("implode read payload mismatch".to_string());
+    #[cfg(not(feature = "compression-pkware"))]
+    {
+        return Ok(());
     }
-    Ok(())
+    #[cfg(feature = "compression-pkware")]
+    {
+        let payload = fill_beta(4096);
+        let compressed = pklib::implode_bytes(
+            &payload,
+            pklib::CompressionMode::Binary,
+            pklib::DictionarySize::Size4K,
+        )
+        .map_err(|e| format!("implode payload: {e}"))?;
+        let got = stormlib_rs::decompress(
+            CompressionMethod::PkwareImplode,
+            &compressed,
+            Some(payload.len()),
+        )
+        .map_err(|e| format!("decompress implode payload: {e}"))?;
+        if got != payload {
+            return Err("implode read payload mismatch".to_string());
+        }
+        Ok(())
+    }
 }
 
 fn check_verify_raw_v4(root: &Path) -> Result<(), String> {

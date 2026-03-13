@@ -6,6 +6,7 @@ fn write_fixture_mpq(path: &std::path::Path) {
     std::fs::write(path, mpq).expect("write fixture mpq");
 }
 
+#[cfg(feature = "compression-zlib")]
 #[test]
 fn corrupted_sector_offsets_return_format_error() {
     let dir = tempfile::tempdir().expect("tempdir");
@@ -38,6 +39,7 @@ fn corrupted_sector_offsets_return_format_error() {
     ));
 }
 
+#[cfg(feature = "compression-zlib")]
 #[test]
 fn truncated_block_range_returns_bounds_error() {
     let dir = tempfile::tempdir().expect("tempdir");

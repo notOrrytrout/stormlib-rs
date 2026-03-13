@@ -341,7 +341,7 @@ fn zlib_compress_engine(input: &[u8]) -> flate2::Compress {
     flate2::Compress::new_with_window_bits(flate2::Compression::new(6), true, window_bits)
 }
 
-#[cfg(not(feature = "compression-zlib-native"))]
+#[cfg(all(feature = "compression-zlib", not(feature = "compression-zlib-native")))]
 fn zlib_compress_engine(_input: &[u8]) -> flate2::Compress {
     flate2::Compress::new(flate2::Compression::new(6), true)
 }

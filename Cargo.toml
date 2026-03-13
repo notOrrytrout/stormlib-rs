@@ -1,11 +1,11 @@
 [package]
 name = "stormlib-rs"
-version = "0.1.0"
+version = "0.0.3"
 edition = "2021"
-rust-version = "1.74"
-license = "MIT OR Apache-2.0"
+rust-version = "1.93"
+license = "MIT"
 description = "Rust-native MPQ archive toolkit"
-repository = "https://example.invalid/stormlib-rs"
+repository = "https://github.com/notOrrytrout/stormlib-rs"
 readme = "README.md"
 keywords = ["mpq", "stormlib", "archive", "rust"]
 categories = ["filesystem", "game-development"]

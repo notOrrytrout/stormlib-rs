@@ -70,7 +70,10 @@ mod tests {
     #[test]
     fn sanitize_extract_name_removes_parent_segments() {
         let p = sanitize_extract_name("../foo\\bar//baz.txt");
-        assert_eq!(p.to_string_lossy(), "foo/bar/baz.txt");
+        assert_eq!(
+            p,
+            std::path::PathBuf::from("foo").join("bar").join("baz.txt")
+        );
     }
 
     #[test]
