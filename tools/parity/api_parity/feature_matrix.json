@@ -1,0 +1,62 @@
+{
+  "version": 1,
+  "source": "stormlib-rs parity planning baseline",
+  "features": [
+    {
+      "id": "extract_special_files",
+      "area": "extract",
+      "description": "Extract (listfile) and (attributes) alongside regular named files",
+      "status": "implemented",
+      "evidence": "src/file/extract.rs"
+    },
+    {
+      "id": "read_lzma_default",
+      "area": "compression",
+      "description": "LZMA read/write parity enabled in default build profile",
+      "status": "implemented",
+      "evidence": "Cargo.toml default features + src/compression/mod.rs"
+    },
+    {
+      "id": "codec_huffman_adpcm_sparse",
+      "area": "compression",
+      "description": "Huffman/ADPCM/Sparse MPQ codec parity",
+      "status": "implemented",
+      "evidence": "src/compression/mod.rs + src/compression/huffman.rs + src/compression/adpcm.rs + src/compression/sparse.rs + tests/compression_codec_vectors.rs (golden-vector encode/decode parity)"
+    },
+    {
+      "id": "writer_exact_layout_parity",
+      "area": "writer",
+      "description": "Create/add/update output layout parity versus StormLib",
+      "status": "implemented",
+      "evidence": "src/file/add.rs + src/archive/attributes.rs + src/internal/file_table.rs + src/compression/mod.rs + tests/writer_equivalence_parity.rs (byte-for-byte archive equality)"
+    },
+    {
+      "id": "attributes_full_compat",
+      "area": "attributes",
+      "description": "Full (attributes) compatibility in read/write and extraction flows",
+      "status": "implemented",
+      "evidence": "src/archive/attributes.rs + src/file/add.rs + tests/attributes_patch.rs + tests/attributes_full_compat_parity.rs (StormLib fixture read parity + sync/write coverage)"
+    },
+    {
+      "id": "patch_chain_apply",
+      "area": "patch",
+      "description": "Open/apply patch archives with StormLib-compatible precedence behavior",
+      "status": "implemented",
+      "evidence": "src/archive/patch.rs + src/archive/patch_apply.rs + tests/patch_chain_parity.rs (explicit+auto prefix handling, fallback, and last-patch precedence)"
+    },
+    {
+      "id": "verify_raw_full",
+      "area": "verify",
+      "description": "Full SFileVerifyRawData target coverage",
+      "status": "implemented",
+      "evidence": "src/archive/verify.rs + tests/verify_raw_full_parity.rs + existing verify unit tests (header/het/bet/hash/block/hiblock/file target behavior and edge-case parity coverage)"
+    },
+    {
+      "id": "api_surface_locale_callbacks",
+      "area": "api",
+      "description": "Locale/global callback/search-scope API surface parity",
+      "status": "implemented",
+      "evidence": "src/file/read.rs + src/internal/file_table.rs + src/file/list.rs + src/file/callbacks.rs (locale APIs plus list/add/compact callback surface)"
+    }
+  ]
+}

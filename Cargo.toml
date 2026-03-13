@@ -1,0 +1,47 @@
+[package]
+name = "stormlib-rs"
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.74"
+license = "MIT OR Apache-2.0"
+description = "Rust-native MPQ archive toolkit"
+repository = "https://example.invalid/stormlib-rs"
+readme = "README.md"
+keywords = ["mpq", "stormlib", "archive", "rust"]
+categories = ["filesystem", "game-development"]
+
+[features]
+default = ["compression-zlib", "compression-bzip2", "compression-pkware"]
+compression-zlib = ["dep:flate2"]
+compression-zlib-native = ["compression-zlib", "flate2/zlib"]
+compression-bzip2 = ["dep:bzip2"]
+compression-lzma = ["dep:lzma-rs"]
+compression-pkware = ["dep:pklib"]
+strict-multi-mask = []
+
+[dependencies]
+thiserror = "1"
+bitflags = "2"
+sha1 = "0.10.6"
+md-5 = "0.10.6"
+regex = "1"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+sha2 = "0.10.8"
+bytes = { version = "1", optional = true }
+memchr = { version = "2", optional = true }
+crc32fast = { version = "1", optional = true }
+flate2 = { version = "1.1.9", optional = true }
+bzip2 = { version = "0.6.1", optional = true }
+lzma-rs = { version = "0.3.0", optional = true }
+pklib = { version = "0.2.0", optional = true }
+
+[dev-dependencies]
+proptest = "1"
+tempfile = "3"
+hex = "0.4"
+criterion = { version = "0.5", features = ["html_reports"] }
+
+[[bench]]
+name = "mpq"
+harness = false

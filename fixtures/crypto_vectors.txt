@@ -1,0 +1,3 @@
+# name|mpq_pos_hex|file_size_hex|fix_key(0/1)|plain_hex|encrypted_hex
+# Replace this file by running tools/parity/crypto/generate_crypto_vectors.c against StormLib.
+fixtures\\models\\footman.mdx|00000000|0000000c|0|11223344cafebabeaabbccdd|cceec7070e38b6b2800230fa

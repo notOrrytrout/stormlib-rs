@@ -1,0 +1,5 @@
+target/
+tools/parity/mixed_sector/generate_fixture
+tools/parity/writer_equivalence/generate_fixture
+__pycache__/
+*.py[cod]
